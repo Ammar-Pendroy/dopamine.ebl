@@ -1,21 +1,20 @@
 import streamlit as st
-from pages import Home, Menu, Mood_Tracker, Loyalty
+from pages import home, menu, mood_tracker, loyalty
 
 st.set_page_config(page_title="Dopamine Coffee ☕", layout="wide")
 
 def main():
-    st.sidebar.title("Navigation")
-    page = st.sidebar.radio("Go to", ["Home", "Menu", "Mood Tracker", "Loyalty"])
-    
+    st.sidebar.title("☕ Dopamine Coffee")
+    page = st.sidebar.radio("Navigate", ["Home", "Menu", "Mood Tracker", "Loyalty Program"])
+
     if page == "Home":
-        Home.show()
+        home.show()
     elif page == "Menu":
-        Menu.show()
+        menu.show()
     elif page == "Mood Tracker":
-        Mood_Tracker.show()
-    elif page == "Loyalty":
-        Loyalty.show()
+        mood_tracker.show()
+    elif page == "Loyalty Program":
+        loyalty.show()
 
 if __name__ == '__main__':
     main()
-
