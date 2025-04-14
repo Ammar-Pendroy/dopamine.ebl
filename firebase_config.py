@@ -2,6 +2,9 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 import streamlit as st
 
+st.secrets["firebase"]["project_id"]
+
+
 def init_connection():
     if not firebase_admin._apps:
         cred = credentials.Certificate({
