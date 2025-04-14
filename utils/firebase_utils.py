@@ -9,6 +9,8 @@ def get_loyalty_points(user_id="guest"):
         pass
     return 0
 
+st.secrets["firebase"]["project_id"]
+
 def increment_loyalty_points(user_id="guest"):
     ref = db.collection("loyalty_points").document(user_id)
     current = get_loyalty_points(user_id)
