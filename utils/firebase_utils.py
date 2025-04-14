@@ -1,30 +1,18 @@
-from firebase_config import init_connection
-import datetime
-import csv
-import os
+# LOYALTY SYSTEM
 
-db = init_connection()
-CSV_PATH = "fallback_mood_log.csv"
-
-def log_mood_entry(mood: str):
-    entry = {
-        "mood": mood,
-        "timestamp": datetime.datetime.utcnow()
-    }
+def get_loyalty_points(user_id="guest"):
     try:
-        db.collection("mood_logs").add(entry)
-    except Exception as e:
-        with open(CSV_PATH, mode="a", newline="") as file:
-            writer = csv.writer(file)
-            writer.writerow([entry["timestamp"], entry["mood"]])
+        doc = db.collection("loyalty_points").document(user_id).get()
+        if doc.exists:
+            return doc.to_dict().get("points", 0)
+    except:
+        pass
+    return 0
 
-def get_mood_logs():
-    try:
-        docs = db.collection("mood_logs").order_by("timestamp").stream()
-        return [{"mood": d.to_dict()["mood"], "timestamp": d.to_dict()["timestamp"]} for d in docs]
-    except Exception:
-        if os.path.exists(CSV_PATH):
-            with open(CSV_PATH, mode="r") as file:
-                reader = csv.reader(file)
-                return [{"timestamp": row[0], "mood": row[1]} for row in reader]
-        return []
+def increment_loyalty_points(user_id="guest"):
+    ref = db.collection("loyalty_points").document(user_id)
+    current = get_loyalty_points(user_id)
+    ref.set({"points": current + 1})
+
+def reset_loyalty_points(user_id="guest"):
+    db.collection("loyalty_points").document(user_id).set({"points": 0})
